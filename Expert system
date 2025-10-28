@@ -1,0 +1,69 @@
+% ------------------------------
+%   Simple Expert System
+%   Topic: Career Advisor
+% ------------------------------
+
+:- dynamic yes/1, no/1.
+
+% --- Knowledge Base ---
+
+career(engineer) :-
+    trait(logical),
+    trait(likes_math),
+    trait(problem_solver).
+
+career(artist) :-
+    trait(creative),
+    trait(expressive),
+    trait(likes_painting).
+
+career(teacher) :-
+    trait(patience),
+    trait(good_communication),
+    trait(likes_helping_others).
+
+career(entrepreneur) :-
+    trait(leader),
+    trait(risk_taker),
+	trait(problem_solver),
+    trait(innovative).
+
+career(scientist) :-
+    trait(logical),
+    trait(curious),
+    trait(likes_experiments),
+    trait(observant).
+
+% --- Trait Checking ---
+
+trait(Trait) :-
+    (
+    yes(Trait)->true; 
+    no(Trait)->fail; 
+    ask(Trait)
+    ).
+
+% --- Ask the User ---
+
+ask(Question) :-
+    format('Do you consider yourself ~w? (yes/no): ', [Question]),
+    read(Response),
+    ( (Response == yes ; Response == y)-> assert(yes(Question)); 
+    	assert(no(Question)), fail ).
+
+% --- Start the System ---
+
+start :-
+    write('--- Career Advisor Expert System ---'), nl,
+    write('Answer with yes. or no. to the following questions.'), nl, nl,
+    ( 
+    career(C) ->format('~nYour ideal career could be: ~w!~n', [C]); 
+    write('~nSorry, I could not find a perfect match.'), nl
+    ),
+    undo.
+
+% --- Undo memory for next run ---
+
+undo :- retract(yes(_)), fail.
+undo :- retract(no(_)), fail.
+undo.
