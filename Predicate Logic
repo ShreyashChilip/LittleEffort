@@ -1,0 +1,61 @@
+% ------------------------------
+%   Family Relationship Logic
+% ------------------------------
+
+% --- Facts ---
+male(rajesh).
+male(amit).
+male(shreyash).
+male(rahul).
+
+female(sunita).
+female(kavita).
+female(priya).
+
+parent(rajesh, amit).
+parent(rajesh, shreyash).
+parent(sunita, amit).
+parent(sunita, shreyash).
+
+parent(amit, rahul).
+parent(kavita, rahul).
+
+% --- Rules ---
+
+father(X, Y) :-
+    male(X),
+    parent(X, Y).
+
+mother(X, Y) :-
+    female(X),
+    parent(X, Y).
+
+grandfather(X, Y) :-
+    male(X),
+    parent(X, Z),
+    parent(Z, Y).
+
+grandmother(X, Y) :-
+    female(X),
+    parent(X, Z),
+    parent(Z, Y).
+
+brother(X, Y) :-
+    male(X),
+    parent(Z, X),
+    parent(Z, Y),
+    X \= Y.
+
+sister(X, Y) :-
+    female(X),
+    parent(Z, X),
+    parent(Z, Y),
+    X \= Y.
+
+son(X, Y) :-
+    male(X),
+    parent(Y, X).
+
+daughter(X, Y) :-
+    female(X),
+    parent(Y, X).
